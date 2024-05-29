@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\VolunteerContractResource\Pages;
 
 use App\Filament\Resources\VolunteerContractResource;
+use App\Models\Volunteer;
 use App\Models\VolunteerContract;
 use Filament\Actions;
+use Filament\Forms\Components\Textarea;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -15,12 +17,13 @@ use Filament\Tables\Table;
 
 class ListVolunteerContracts extends ListRecords
 {
+    protected static ?string $title = 'Контракт волонтера';
     protected static string $resource = VolunteerContractResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+
         ];
     }
 
@@ -31,19 +34,34 @@ class ListVolunteerContracts extends ListRecords
                 TextColumn::make('fio')->label('ФИО'),
                 TextColumn::make('user.phone')->label('Номер телефона'),
                 TextColumn::make('user.iin')->label('ИИН'),
-                ImageColumn::make('frontImage.path')
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'waiting' => 'gray',
+                        'confirmed' => 'success',
+                        'rejected' => 'danger',
+                    })->label('Статус')
             ])
             ->actions([
-                Action::make('feature')
-                    ->action(function (VolunteerContract $record) {
-                        $record->is_featured = true;
+                Action::make('reject')->label('Отклонить')->color('danger')
+                    ->form([
+                        Textarea::make('reason')
+                            ->label('Причина')
+                    ])
+                    ->action(function (array $data, VolunteerContract $record): void {
+                        $record->reason = $data['reason'];
+                        $record->status = 'rejected';
                         $record->save();
-                    }),
-                Action::make('unfeature')
-                    ->action(function (VolunteerContract $record) {
-                        $record->is_featured = false;
+                    })->hidden(function (VolunteerContract $record) {return $record->status != "waiting";}),
+                Action::make('confirm')->label('Подтвердить')->color('success')
+                    ->action(function (VolunteerContract $record): void {
+                        $record->status = 'confirmed';
                         $record->save();
-                    }),
+                        $volunteer = new Volunteer();
+                        $volunteer->contract_id = $record->id;
+                        $volunteer->user_id = $record->user_id;
+                        $volunteer->save();
+                    })->hidden(function (VolunteerContract $record) {return $record->status != "waiting";}),
                 ViewAction::make('view')
             ]);
     }

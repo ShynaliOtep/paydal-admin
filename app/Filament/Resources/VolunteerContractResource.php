@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class VolunteerContractResource extends Resource
 {
     protected static ?string $model = VolunteerContract::class;
+    protected static ?string $title = 'Контракты волонтера';
+    protected static ?string $navigationLabel = 'Контракты волонтера';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\VolunteerContractResource\Pages;
-use App\Filament\Resources\VolunteerContractResource\RelationManagers;
-use App\Models\VolunteerContract;
-use App\Services\Access;
+use App\Filament\Resources\ProtocolResource\Pages;
+use App\Filament\Resources\ProtocolResource\RelationManagers;
+use App\Models\Protocol;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,12 +14,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class VolunteerContractResource extends Resource
+class ProtocolResource extends Resource
 {
-    protected static ?string $model = VolunteerContract::class;
-    protected static ?string $title = 'Контракты волонтера';
-    protected static ?string $navigationLabel = 'Контракты волонтера';
-
+    protected static ?string $model = Protocol::class;
+    protected static ?string $title = 'История обращении';
+    protected static ?string $navigationLabel = 'История обращении';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -60,15 +58,16 @@ class VolunteerContractResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVolunteerContracts::route('/'),
-            'create' => Pages\CreateVolunteerContract::route('/create'),
-            'edit' => Pages\EditVolunteerContract::route('/{record}/edit'),
-            'view' => Pages\ViewVolunteerContract::route('/{record}'),
+            'index' => Pages\ListProtocols::route('/'),
+            'create' => Pages\CreateProtocol::route('/create'),
+            'create_pdd' => Pages\CreatePddProtocol::route('/create/pdd'),
         ];
     }
 
-    public static function shouldRegisterNavigation(): bool
+
+
+    public static function isShouldRegisterNavigation(): bool
     {
-        return Filament::auth()->user()->is_admin;
+        return Filament::auth()->user()->police_id;
     }
 }

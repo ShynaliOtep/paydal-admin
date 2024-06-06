@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\VolunteerContractResource\Pages;
-use App\Filament\Resources\VolunteerContractResource\RelationManagers;
-use App\Models\VolunteerContract;
-use App\Services\Access;
+use App\Filament\Resources\ViolationResource\Pages;
+use App\Filament\Resources\ViolationResource\RelationManagers;
+use App\Models\Violation;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,12 +14,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class VolunteerContractResource extends Resource
+class ViolationResource extends Resource
 {
-    protected static ?string $model = VolunteerContract::class;
-    protected static ?string $title = 'Контракты волонтера';
-    protected static ?string $navigationLabel = 'Контракты волонтера';
-
+    protected static ?string $model = Violation::class;
+    protected static ?string $title = 'Список поступленных заявление на нарушение';
+    protected static ?string $navigationLabel = 'Список нарушение';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -60,15 +58,19 @@ class VolunteerContractResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVolunteerContracts::route('/'),
-            'create' => Pages\CreateVolunteerContract::route('/create'),
-            'edit' => Pages\EditVolunteerContract::route('/{record}/edit'),
-            'view' => Pages\ViewVolunteerContract::route('/{record}'),
+            'index' => Pages\ListViolations::route('/'),
+            'create' => Pages\CreateViolation::route('/create'),
+            'edit' => Pages\EditViolation::route('/{record}/edit'),
+            'view' => Pages\ViewViolation::route('/{record}'),
+            'reject' => Pages\RejectViolation::route('/reject/t'),
         ];
     }
 
-    public static function shouldRegisterNavigation(): bool
+    /**
+     * @return bool
+     */
+    public static function isShouldRegisterNavigation(): bool
     {
-        return Filament::auth()->user()->is_admin;
+        return Filament::auth()->user()->police_id;
     }
 }

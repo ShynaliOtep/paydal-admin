@@ -1,0 +1,47 @@
+.violations{
+    background: #1c69ad;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 12px;
+    color: #fff !important;
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
+    padding: 10px 10px 60px;
+}
+.violation {
+    border-bottom: 1px solid #fff;
+}
+.violation-texts{
+    color: #fff !important;
+    float: left;
+    width: 80%;
+}
+.violation-texts p {
+    color: #fff !important;
+}
+.violation-right{
+    float: left;
+    width: 20%;
+}
+.violation-right img {
+    width: 30px;
+    margin-top: 20px;
+}
+.container{
+    padding: 30px;
+}
+
+.police-violation {
+    background: #1c69ad;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 12px;
+    color: #fff !important;
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
+    padding: 10px 10px 60px;
+}

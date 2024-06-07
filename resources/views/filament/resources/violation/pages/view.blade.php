@@ -4,6 +4,7 @@
  */
 ?>
 <x-filament-panels::page>
+
     <x-filament::section>
         <x-slot name="heading">
             Данные
@@ -20,6 +21,7 @@
             Местоположение
         </x-slot>
         <div id="map"></div>
+{{--        <div id="map"></div>--}}
 
         {{--        <iframe--}}
         {{--            src="https://yandex.com/map-widget/v1/?um=constructor%3Aded13833a7bc65e6c633b7cc63819b26bf7921f2c6838ff235fe551659c1d219&amp;source=constructor"--}}
@@ -63,32 +65,77 @@
     </div>
     <style>
         #map {
-            margin: 0;
-            width: 100%;
-            height: 300px;
-            overflow: hidden;
+            height: 400px; /* Adjust height as needed */
+            width: 100%;   /* Adjust width as needed */
         }
     </style>
-    <script src="https://mapgl.2gis.com/api/js/v1"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDicD9QRrjdVI2sWYNQsG_MtIsd9-4uHvI&libraries=maps,marker&v=beta"
+
+    ></script>
+{{--    <script src="https://mapgl.2gis.com/api/js/v1"></script>--}}
     <script>
-        const map = new mapgl.Map('map', {
-            center: [{{$record->location->lon}}, {{$record->location->lat}}],
-            zoom: 13,
-            key: '355199f0-941c-4ee9-823d-46c4d7798ac8',
-            style: 'c080bb6a-8134-4993-93a1-5b4d8c36a59b'
-        });
-        const marker = new mapgl.Marker(map, {
-            coordinates: [{{$record->location->lon}}, {{$record->location->lat}}],
-        });
+        // Initialize and add the map
+        let map;
+
+        async function initMap() {
+            // The location of Uluru
+            const position = {  lat: {{$record->location->lat}},
+                lng: {{$record->location->lon}}};
+            // Request needed libraries.
+            //@ts-ignore
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+            // The map, centered at Uluru
+            map = new Map(document.getElementById("map"), {
+                zoom: 12,
+                center: position,
+                mapId: "DEMO_MAP_ID",
+            });
+
+            // The marker, positioned at Uluru
+            const marker = new AdvancedMarkerElement({
+                map: map,
+                position: position,
+                title: "Uluru",
+            });
+        }
+
+        initMap();
+
+        {{--// Initialize and add the map--}}
+        {{--function initMap() {--}}
+
+        {{--    // The location of Geeksforgeeks office--}}
+        {{--    const gfg_office = {--}}
+        {{--        lat: {{$record->location->lat}},--}}
+        {{--        lng: {{$record->location->lon}}--}}
+        {{--    };--}}
+
+        {{--    // Create the map, centered at gfg_office--}}
+        {{--    const map = new google.maps.Map(--}}
+        {{--        document.getElementById("map"), {--}}
+
+        {{--            // Set the zoom of the map--}}
+        {{--            zoom: 12,--}}
+        {{--            center: gfg_office,--}}
+        {{--        });--}}
+        {{--    const marker = new AdvancedMarkerElement({--}}
+        {{--        map: map,--}}
+        {{--        position: { lat: -{{$record->location->lat}}, lng: {{$record->location->lon}} },--}}
+        {{--        title: "Uluru",--}}
+        {{--    });--}}
+        {{--}--}}
+        {{--initMap()--}}
+        {{--const map = new mapgl.Map('map', {--}}
+        {{--    center: [{{$record->location->lon}}, {{$record->location->lat}}],--}}
+        {{--    zoom: 13,--}}
+        {{--    key: '355199f0-941c-4ee9-823d-46c4d7798ac8',--}}
+        {{--    style: 'c080bb6a-8134-4993-93a1-5b4d8c36a59b'--}}
+        {{--});--}}
+        {{--const marker = new mapgl.Marker(map, {--}}
+        {{--    coordinates: [{{$record->location->lon}}, {{$record->location->lat}}],--}}
+        {{--});--}}
     </script>
-    {{--    <script src="https://mapgl.2gis.com/api/js/v1"></script>--}}
-    {{--    <script>--}}
-    {{--        function initMap() {--}}
-    {{--            const map = new mapgl.Map('map', {--}}
-    {{--                center: [55.31878, 25.23584],--}}
-    {{--                zoom: 13,--}}
-    {{--                key: '355199f0-941c-4ee9-823d-46c4d7798ac8',--}}
-    {{--            });--}}
-    {{--        }--}}
-    {{--    </script>--}}
 </x-filament-panels::page>

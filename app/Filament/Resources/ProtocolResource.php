@@ -66,7 +66,7 @@ class ProtocolResource extends Resource
 
 
 
-    public static function isShouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         return Filament::auth()->user()->police_id;
     }

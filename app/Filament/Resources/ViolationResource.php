@@ -69,7 +69,7 @@ class ViolationResource extends Resource
     /**
      * @return bool
      */
-    public static function isShouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         return Filament::auth()->user()->police_id;
     }

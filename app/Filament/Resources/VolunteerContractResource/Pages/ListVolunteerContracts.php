@@ -6,6 +6,7 @@ use App\Filament\Resources\VolunteerContractResource;
 use App\Models\Volunteer;
 use App\Models\VolunteerContract;
 use Filament\Actions;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Actions\Action;
@@ -25,6 +26,13 @@ class ListVolunteerContracts extends ListRecords
         return [
 
         ];
+    }
+
+    public function mount(): void
+    {
+        if(Filament::auth()->user()->police_id) {
+            redirect('/admin/violations');
+        }
     }
 
     public function table(Table $table): Table

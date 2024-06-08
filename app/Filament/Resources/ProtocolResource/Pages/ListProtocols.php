@@ -35,7 +35,7 @@ class ListProtocols extends ListRecords
                 TextColumn::make('id')->label('Обращение'),
                 TextColumn::make('violation.city.title')->label('Город'),
                 TextColumn::make('violation.volunteer.user.fio')->label('От'),
-                TextColumn::make('status')
+                TextColumn::make('violation.status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'created' => 'gray',
